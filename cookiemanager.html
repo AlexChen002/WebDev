@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table,td,input[type="button"],input[type="text"]{border:solid black 2px;font-size:small;}
+.division{border:solid black 2px;background-color:#CCCCCC;margin:2px;padding:1px;font-size:small;}
+th{text-align:center;background:black; color:white;padding:4px;}
+div.v0{ width:100%;}
+div.v1{ width:50%; margin:0px auto; background-color:#EEEEEE;}
+</style>
+<title>COOKIE MANAGER</title>
+<script>
+function setCookie(name,value,days)
+{
+	let d=new Date();
+	d.setTime(d.getTime()+(days*24*60*60*1000))
+	let expires = "expires="+ d.toUTCString();
+	document.cookie=name+"="+value+"; "+expires+"; path=/";
+}
+		
+function getCookie(name)
+{
+	let x=document.cookie.split("; ");
+	for(var i=0;i<x.length;i++)
+	{
+		var y=x[i].split("=");
+		if(y[0]==name) return y[1];
+	}
+	return null;
+} 
+
+function delCookie(name)
+{
+	setCookie(name,"",-1);
+}
+
+function delAllCookies()
+{
+	let x=document.cookie.split("; ");
+	for(var i=0;i<x.length;i++)
+	{
+		var y=x[i].split("=");
+		delCookie(y[0]);
+	}
+} 
+//----------------------------------------------------------	
+	
+function createCookie()
+{
+		setCookie(cname01.value,cvalue01.value,10)
+		location.reload();
+}
+
+function readCookie()
+{
+	cvalue02.value=getCookie(cname02.value);
+}
+
+function removeCookie()
+{
+	delCookie(cname03.value);
+	location.reload();
+}
+</script>
+</head>
+<body>
+<div class="v0"><div class="v1">
+	<div class="division" style="font-size:1.5em;text-align:center;background:black; color:white;">COOKIE MANAGER</div>
+	<div class="division">
+		<form>
+		Name:<input type="text" size="10" 		id="cname01"  />
+		Value: <input type="text" size="10" 	id="cvalue01" />
+		<input type="button" value="SetCookie"	onclick="createCookie()"/>
+		<input type="button" value="Clear" />
+		</form>
+	</div>
+	<div class="division">
+		<form>
+		Name:<input type="text" size="10" 		id="cname02" 	/>
+		Value: <input type="text" size="10" 	id="cvalue02"	/>
+		<input type="button" value="GetCookie" 	onclick="readCookie();" />
+		<input type="button" value="Clear" />
+		</form>
+	</div>
+	<div class="division">
+		<form>
+		Name:<input  type="text" size="10" 		id="cname03" />
+		<input type="button" value="DelCookie" 	onclick="removeCookie();"/>
+		<input type="button" value="DelAllCookies" onclick="delAllCookies();location.reload();" />
+		<input type="button" value="Clear" />
+		</form>
+	</div>
+	<div class="division">
+		<form>
+		<input  type="text" size="35" id="cname04" />
+		<input type="button" value="RawCookie"	onclick="cname04.value=document.cookie;" />
+		<input type="button" value="Clear"/>
+		</form>
+	</div>
+	
+<div class="division">
+	<table style='width:50%;'>
+	<tr><th colspan='2'>COOKIE LISTING</th></tr>
+	<tr><th>NAME</th><th>VALUE</th></tr>
+	
+	<script>
+	if(document.cookie.search("=") != -1)
+	{
+		let x=document.cookie.split("; ");
+		//alert("length="+x.length);
+	
+		for(var i=0;i<x.length;i++)
+		{
+			var y=x[i].split("=");
+			document.writeln("<tr><td style='width:10;'>"+y[0]+"</td><td style='width:10;'>"+y[1]+"</td></tr>");
+		}
+	}
+	</script>
+	</table>
+</div>
+</div></div>
+</body>
+</html>

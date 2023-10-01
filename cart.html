@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  /* Your CSS styles here */
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0;
+  }
+
+  #cart-container {
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 20px;
+    margin: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+
+  th {
+    background: #333;
+    color: white;
+    text-align: left;
+    padding: 8px;
+    border: 1px solid purple;
+  }
+
+  td {
+    border: 1px solid purple;
+    padding: 8px;
+  }
+
+  input[type='text'] {
+    width: 50px;
+  }
+
+  .update-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+
+  .update-button:hover {
+    background-color: #45a049;
+  }
+
+  .button-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .clear-cart-button {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+
+  .clear-cart-button:hover {
+    background-color: #d32f2f;
+  }
+</style>
+<script src='js/cookies.js'></script>
+<script src='js/catalog.js'></script>
+<script src='js/cart.js'></script>
+
+<script>
+function delete2(code)
+{
+  let x=new ShoppingCart('user');
+  x.setNumOrdered(code,0);
+  location.reload();
+}
+
+function update(code)
+{
+  var name=code+"qty";
+  value=parseInt(document.getElementById(name).value);
+  let x=new ShoppingCart('user');
+  x.setNumOrdered(code,value);
+  location.reload();
+}
+
+function clearCart() {
+  let x = new ShoppingCart('user');
+  console.log("Before clearing cart:", x.getItemsOrdered());
+  x.clearCart();
+  console.log("After clearing cart:", x.getItemsOrdered()); 
+  location.reload();
+  
+  
+}
+
+function displayCart()
+{
+  var total=0;
+  var str="<table>";
+  str+="<tr><th colspan='2'>NAME</th><th>QUANTITY</th><th>PRICE</th><th>SUBTOTAL</th>";
+  let x=new ShoppingCart('user');
+  let items=x.getItemsOrdered();
+  console.log("Displaying cart items: ", items);
+  for(let i=0;i<items.length;i++)
+  {
+    let qty =items[i].getNumItems();
+    if(qty !=null)
+    {
+      var name=items[i].getItemCode()+"qty";
+      var image=items[i].getItemImage();
+      str+=
+      `
+      <tr>
+      <td style='text-align:left'><img width='100px' src='images/${image}' /></td>
+      <td style='text-align:left'>${items[i].getItemName()}</td>
+      <td style='text-align:right'><input id='${name}' type='text' value='${qty}' size='2' />
+      <input id='${items[i].getItemCode()}' type='button' value='update'
+      onclick='update(this.id);'/>
+      <img src='images/x.png' width='20px;' onclick=delete2('${items[i].getItemCode()}') /></td>
+      <td style='text-align:right'>$${items[i].getUnitCost()}</td>
+      <td style='text-align:right'>$${items[i].getTotalCost()}</td>
+      </tr>
+      `;
+    }
+  }
+  str+="</table>";
+  document.getElementById("cart").innerHTML=str;
+}
+</script>
+</head>
+<body onload="displayCart();">
+<center>
+  <div id="cart-container">
+    <h2>Your Cart</h2>
+    <div id="cart"></div>
+    <div class="button-container">
+    <a href="products.html"> 
+      <button class="update-button">Return to Products</button>
+    </a>
+      <button class="clear-cart-button" onclick="clearCart();">Clear Cart</button>  
+      <a href="checkout.html"> 
+        <button class="update-button">Confirm Purchase</button>
+      </a>
+      </div>
+  
+    </div>
+</center>
+</body>
+</html>
